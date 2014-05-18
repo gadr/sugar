@@ -3,11 +3,14 @@ console.log "How much sugar have you been eating?"
 cokeCan = {}
 sugarDispenser = {}
 emitter = {}
+sugar = {}
+rectangle = new Phaser.Rectangle(0, 0, 100, 40)
 
 preload = ->
   @load.image "coke-can", "img/coke-can.jpeg"
   @load.image "sugar-dispenser", "img/sugar-dispenser.jpg"
-  @load.image "sugar", "img/sugarcube.png"
+  @load.image "sugarcube", "img/sugarcube.png"
+  @load.image "sugar", "img/sugar.jpg"
 
 create = ->
   @physics.startSystem Phaser.Physics.ARCADE
@@ -15,10 +18,13 @@ create = ->
   @stage.backgroundColor = 0xFAFAFA;
   
   cokeCan = @add.sprite 0, 0, "coke-can"
+  sugar = @add.sprite 300, 200, "sugar"
+  sugar.crop rectangle
+  sugar.bringToTop()
   sugarDispenser = @add.sprite 600, 200, "sugar-dispenser"
   emitter = @add.emitter -50, 0, 10000
   [emitter.x, emitter.y] = [513, 197]
-  emitter.makeParticles 'sugar'
+  emitter.makeParticles 'sugarcube'
   emitter.minParticleScale = 0.1
   emitter.maxParticleScale = 0.5
   emitter.particleDrag.setTo 50, 50
@@ -47,6 +53,9 @@ create = ->
 update = ->
   if sugarDispenser.isDown and 
       sugarDispenser.angle is -90
+    sugar.y -= 1
+    rectangle.height += 1
+    sugar.crop rectangle
     emitter.emitParticle() for i in [0..30]
     
   if sugarDispenser.isDown and 

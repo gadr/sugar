@@ -13,7 +13,7 @@ create = ->
   @physics.startSystem Phaser.Physics.ARCADE
   
   @stage.backgroundColor = 0xFAFAFA;
-
+  
   cokeCan = @add.sprite 0, 0, "coke-can"
   sugarDispenser = @add.sprite 600, 200, "sugar-dispenser"
   emitter = @add.emitter -50, 0, 10000
@@ -21,13 +21,16 @@ create = ->
   emitter.makeParticles 'sugar'
   emitter.minParticleScale = 0.1
   emitter.maxParticleScale = 0.5
+  emitter.particleDrag.setTo 50, 50
+  emitter.height = 5
+  emitter.width = 5
+  emitter.enableBody = true
   emitter.setYSpeed 300, 500
   emitter.setXSpeed 20, -100
   emitter.minRotation = 0
   emitter.maxRotation = 0.2
-  emitter.gravity = 200
-  emitter.bounce = 0.3
-     
+  emitter.lifespan = 600
+  
   sugarDispenser.anchor.x = 0.5
   sugarDispenser.anchor.y = 0.5
   sugarDispenser.scale.x = - 0.5
@@ -56,7 +59,7 @@ update = ->
       sugarDispenser.angle < -45
     sugarDispenser.angle += 3
     
-new Phaser.Game 800, 600, Phaser.AUTO, "canvas",
+new Phaser.Game 800, 400, Phaser.AUTO, "canvas",
   preload: preload
   create: create
   update: update
